@@ -2,11 +2,13 @@ import io.restassured.http.ContentType;
 
 import org.junit.*;
 import pojos.FullUserPojo;
+import pojos.FullUserPojoUsingLombok;
 import pojos.UserPojo;
 
 import java.util.List;
 
 import static io.restassured.RestAssured.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class ApiTests {
@@ -103,15 +105,15 @@ public class ApiTests {
     @Test
     public void getInfWithDeserializationUsingLombok(){
 
-        List <FullUserPojo> users =
+        List <FullUserPojoUsingLombok> users =
                 given()
                         .baseUri("https://reqres.in/api")
                         .basePath("/users")
                         .contentType(ContentType.JSON)
                         .when().get()
                         .then().statusCode(200)
-                        .extract().jsonPath().getList("data", FullUserPojo.class);
+                        .extract().jsonPath().getList("data", FullUserPojoUsingLombok.class);
 
-        System.out.println(users);
+        assertThat(users).extracting(FullUserPojoUsingLombok::getEmail).contains("george.bluth@reqres.in");
     }
 }

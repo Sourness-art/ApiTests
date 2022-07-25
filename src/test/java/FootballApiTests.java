@@ -105,4 +105,9 @@ public class FootballApiTests extends FootballApiConfig {
                 time(lessThan(1000L));
     }
 
+    @Test
+    public void captureResponseTime() {
+        long responseTime = get("http://api.football-data.org").time();
+        System.out.println("Response time in MS: " + responseTime);
+    }
 }
